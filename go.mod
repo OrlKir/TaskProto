@@ -1,3 +1,3 @@
-module Contract_for_task
+module github.com/OrlKir/TaskProto
 
 go 1.25
