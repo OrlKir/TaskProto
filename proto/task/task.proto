@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package task;
+
+import "google/protobuf/empty.proto";
+
+option go_package = "orlov.task.v1;taskv1";
+
+service TaskService {
+  rpc CreateTask(CreateTaskRequest) returns (CreateTaskResponse);
+  rpc CancelTask(CancelTaskRequest) returns (google.protobuf.Empty);
+  rpc GetTaskStatus(GetTaskStatusRequest) returns (TaskStatusResponse);
+}
+
+message CreateTaskRequest {
+  string task_type = 1;
+  bytes payload = 2;
+  int64 execute_at = 3;
+  int32 max_retries = 4;
+}
+
+message  CreateTaskResponse {
+  string task_id = 1;
+}
+
+message  CancelTaskRequest {
+  string task_id = 1;
+}
+
+message GetTaskStatusRequest {
+  string task_id = 1;
+}
+
+message TaskStatusResponse {
+  TaskStatus status = 1;
+  int32 attempts = 2;
+  int32 max_retries = 3;
+  int64 execute_at = 4;
+  string last_error = 5;
+}
+
+enum TaskStatus{
+  TASK_STATUS_UNSPECIFIED = 0;
+  PENDING = 1;
+  SCHEDULED = 2;
+  RUNNING = 3;
+  SUCCESS = 4;
+  FAILED = 5;
+  CANCELLED = 6;
+}
